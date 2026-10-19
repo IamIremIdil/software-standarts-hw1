@@ -12,8 +12,7 @@ To keep the data between containers, I mounted a volume using `-v hw1-data:/data
 
 ### 3. The `latest` tag
 
-The latest tag is a label commonly used for the most recently published image, but it doesn't guarantee that the image is actually the newest version. This means that building the same Dockerfile today and six months
-from now could produce different results if the base image or dependencies have changed, potentially causing unexpected bugs.
+The latest tag is a label commonly used for the most recently published image, but it doesn't guarantee that the image is actually the newest version. If the base image uses `latest`, building the same Dockerfile today and six months from now could produce different results if the base image or dependencies have changed, potentially causing unexpected bugs.
 
 To avoid this, I pinned my base image to `python:3.12.11-slim-bookworm`, which specifies the Python version and Debian release. I also pinned the dependencies in `requirements.txt` using `flask==3.1.3` and `gunicorn==23.0.0`. This makes the build more predictable and helps ensure that the project behaves consistently across different environments.
 
