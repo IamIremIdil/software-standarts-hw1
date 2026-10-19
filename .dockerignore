@@ -9,4 +9,4 @@ __pycache__/
 Dockerfile
 .dockerignore
 test_app.py
-screenshots/
+screenshots-extra/
