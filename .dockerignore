@@ -10,3 +10,4 @@ Dockerfile
 .dockerignore
 test_app.py
 screenshots-extra/
+*.png
