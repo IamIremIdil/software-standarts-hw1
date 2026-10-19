@@ -30,3 +30,11 @@ def test_greet_name(client):
 def test_visit_counts_up(client):
     assert client.get("/visit").get_json() == {"visits": 1}
     assert client.get("/visit").get_json() == {"visits": 2}
+
+
+###
+
+def test_version_default(client):
+    assert client.get("/version").get_json() == {"version": "dev"}
+
+### added

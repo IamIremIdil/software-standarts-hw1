@@ -10,6 +10,7 @@ Endpoints
 Configuration comes from environment variables (12-factor style):
   APP_GREETING  default "Hello"
   DATA_DIR      default "/data"   (where the visit counter file lives)
+  APP_VERSION   default "dev"     (returned by /version)
 """
 import os
 from pathlib import Path
@@ -20,7 +21,8 @@ app = Flask(__name__)
 
 GREETING = os.environ.get("APP_GREETING", "Hello")
 DATA_DIR = Path(os.environ.get("DATA_DIR", "/data"))
-
+APP_VERSION = os.environ.get("APP_VERSION", "dev")
+## added
 
 def _counter_file() -> Path:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -37,6 +39,10 @@ def greet():
     name = request.args.get("name", "world")
     return jsonify(message=f"{GREETING}, {name}!")
 
+@app.get("/version")
+def version():
+    return jsonify(version=APP_VERSION)
+## added
 
 @app.get("/visit")
 def visit():

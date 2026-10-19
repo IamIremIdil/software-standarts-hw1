@@ -1,9 +1,4 @@
-# VERSION 2 - the improved Dockerfile (quality checklist applied).
-# 1. Pinned, small base image          -> reproducible, smaller, fewer CVEs
-# 2. Dependencies before code          -> build cache works
-# 3. Non-root user                     -> limits damage if compromised
-# 4. Data directory owned by that user -> the volume in the lab is writable
-FROM python:3.12-slim
+FROM python:3.12.11-slim-bookworm
 
 WORKDIR /app
 
@@ -12,12 +7,17 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Create an unprivileged user and a data folder it may write to.
 RUN useradd --create-home --uid 10001 appuser \
     && mkdir -p /data \
     && chown appuser:appuser /data
 USER appuser
 
-ENV DATA_DIR=/data
+ENV DATA_DIR=/data \
+    APP_VERSION=1.0.0 \
+    PYTHONUNBUFFERED=1
 EXPOSE 8000
+
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
+
 CMD ["gunicorn", "-b", "0.0.0.0:8000", "app:app"]
